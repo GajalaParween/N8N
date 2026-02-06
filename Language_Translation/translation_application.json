@@ -1,0 +1,95 @@
+{
+  "name": "translation_application",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dbf7282d-560e-46fc-bd0e-d6231e5e2b97",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        -64
+      ],
+      "id": "b564e72f-8621-4b95-b2dd-247ba71983bf",
+      "name": "Webhook",
+      "webhookId": "dbf7282d-560e-46fc-bd0e-d6231e5e2b97"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Translate the following text into {{ $json.body.language }}:\n\nText: {{ $json.body.input }}\n",
+        "options": {
+          "systemMessage": "You are a translation assistant. \nuse this text : {{ $json.body.input }}\n\nYour job is to translate text into the requested language. \nRespond with only the translated text. \nDo not include explanations, greetings, or any extra words.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        224,
+        -64
+      ],
+      "id": "348a7ca0-5b66-400d-b982-d7bd46ca7306",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        240,
+        160
+      ],
+      "id": "f254eb00-8d12-44d7-a45a-4a65704a405c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Xv97vhaXBiGlMce6",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4b271d4d-a5d2-422a-96c0-0faccc27b523",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e92bfb19d8abf47ce48e7a4b000749db2558bbd2c5cd4055c2dd0752886cff8e"
+  },
+  "id": "NYbaep413mGTLzRF",
+  "tags": []
+}
