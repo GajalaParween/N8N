@@ -1,0 +1,130 @@
+{
+  "name": "ppt_generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "76815fe0-d0d7-486b-8254-bbfbfcdd7059",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0fd0ffa5-85b9-4046-9b1c-c26c8b7a22e0",
+      "name": "Webhook",
+      "webhookId": "76815fe0-d0d7-486b-8254-bbfbfcdd7059"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a PowerPoint presentation on the topic: {{ $json.body.prompt }}\n\nPresentation details:\n- Audience: Undergraduate students\n- Purpose: Educational\n- Number of slides: 10\n- Depth level: Beginner\n- Tone: Simple and clear\n- Include examples or case studies: Yes\n\nSTRICT OUTPUT RULES:\n1. Output MUST contain ONLY valid Python code.\n2. Do NOT include explanations, comments, markdown, or text.\n3. Do NOT include system or role descriptions.\n4. Do NOT wrap the code in ``` or ``` python.\n5. Use the python-pptx library.\n6. The code MUST:\n   - Create a Presentation\n   - Add all slides with titles and bullet points\n   - Save the file as \"generated_presentation.pptx.\"\n7. The code must be directly executable without modification.\n\nOutput ONLY the Python code.\n",
+        "options": {
+          "systemMessage": "You are an expert PowerPoint presentation creator with over 10 years of professional experience in the topic provided by the user.\n\nYou specialize in:\n- Structuring content logically for presentations\n- Creating clear, concise, and engaging slide text\n- Adapting content for business, academic, or technical audiences\n- Writing speaker-friendly bullet points\n- Designing slide titles that are impactful and professional\n\nYour task is to generate a complete PowerPoint presentation outline and content based on the user's input.\n\nRules you must follow:\n1. Each slide must have a clear title.\n2. Each slide should contain 3–6 concise bullet points.\n3. Keep language professional, simple, and presentation-ready.\n4. Avoid long paragraphs.\n5. Ensure logical flow from introduction to conclusion.\n6. If examples or diagrams are helpful, mention them as “(Visual suggestion)”.\n7. Adapt tone based on the user's audience and purpose.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9ce166ab-8509-492f-af91-240aee2c8263",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        128,
+        224
+      ],
+      "id": "a8da1614-e40e-4e85-9bb8-5ea5094e8029",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "fCYwB7VQQJ6164VC",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        560,
+        0
+      ],
+      "id": "0efde19c-6a80-4d8d-a2e4-6e80c71ecaa8",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {
+    "AI Agent": [
+      {
+        "json": {
+          "output": "```python\nfrom pptx import Presentation\nfrom pptx.util import Inches\n\ndef create_presentation():\n    prs = Presentation()\n\n    # Slide Layouts\n    title_slide_layout = prs.slide_layouts[0]  # Title Slide\n    content_slide_layout = prs.slide_layouts[1] # Title and Content\n\n    # Slide 1: Title Slide\n    slide = prs.slides.add_slide(title_slide_layout)\n    title = slide.shapes.title\n    subtitle = slide.placeholders[1]\n    title.text = \"Introduction to Machine Learning\"\n    subtitle.text = \"Unlocking the Power of Data\"\n\n    # Slide 2: What is Machine Learning?\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"What is Machine Learning?\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Computers learning from data without explicit programming.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Core idea: Identify patterns and make predictions.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Goal: Automate decision-making and problem-solving.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Analogy: Teaching a child by showing examples.\"\n\n    # Slide 3: Why is Machine Learning Important?\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Why is Machine Learning Important?\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Data Explosion: Vast amounts of data available today.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Automation: Efficiently automating complex, repetitive tasks.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Personalization: Tailoring experiences to individual users.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Innovation: Driving new discoveries and technological capabilities.\"\n    p5 = body.add_paragraph()\n    p5.text = \"Impact: Revolutionizing industries from healthcare to finance.\"\n\n    # Slide 4: How Does Machine Learning Work? (Basic Idea)\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"How Does Machine Learning Work?\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Input Data: Feeding relevant information to an algorithm.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Pattern Recognition: The algorithm identifies relationships and trends.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Model Training: Adjusting internal parameters based on data insights.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Prediction/Decision: Using the trained model on new, unseen data.\"\n    p5 = body.add_paragraph()\n    p5.text = \"(Visual suggestion: Simple diagram: Input Data -> ML Model -> Output/Prediction)\"\n\n    # Slide 5: Types of Machine Learning - Supervised Learning\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Types of ML: Supervised Learning\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Definition: Learning from labeled data (input-output pairs).\"\n    p2 = body.add_paragraph()\n    p2.text = \"Goal: Predict outcomes for new, unseen data based on past examples.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Common Tasks: Classification (e.g., spam detection), Regression (e.g., house price prediction).\"\n    p4 = body.add_paragraph()\n    p4.text = \"Example: Training a model with pictures of cats and dogs, each labeled correctly.\"\n\n    # Slide 6: Types of Machine Learning - Unsupervised Learning\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Types of ML: Unsupervised Learning\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Definition: Learning from unlabeled data.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Goal: Discover hidden patterns, structures, or relationships within data.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Common Tasks: Clustering (e.g., customer segmentation), Dimensionality Reduction.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Example: Grouping similar news articles together without predefined categories.\"\n\n    # Slide 7: Types of Machine Learning - Reinforcement Learning\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Types of ML: Reinforcement Learning\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Definition: Learning through trial and error in an interactive environment.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Goal: Maximize a cumulative reward by making a sequence of decisions.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Components: Agent, Environment, State, Action, Reward.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Example: Teaching an AI to play a game by rewarding good moves and penalizing bad ones.\"\n    p5 = body.add_paragraph()\n    p5.text = \"(Visual suggestion: Agent-Environment interaction loop)\"\n\n    # Slide 8: Key Steps in a ML Project\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Key Steps in a Machine Learning Project\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"1. Problem Definition: Clearly define the objective and scope.\"\n    p2 = body.add_paragraph()\n    p2.text = \"2. Data Collection & Preparation: Gather, clean, and transform raw data.\"\n    p3 = body.add_paragraph()\n    p3.text = \"3. Model Selection & Training: Choose an algorithm and train it on prepared data.\"\n    p4 = body.add_paragraph()\n    p4.text = \"4. Model Evaluation: Assess the model's performance and accuracy.\"\n    p5 = body.add_paragraph()\n    p5.text = \"5. Deployment & Monitoring: Implement the model and ensure its ongoing effectiveness.\"\n\n    # Slide 9: Real-World Applications\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Real-World Applications of Machine Learning\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Image Recognition: Facial unlock, medical diagnosis, object detection.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Natural Language Processing: Voice assistants (Siri, Alexa), machine translation.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Recommendation Systems: Netflix movie suggestions, Amazon product recommendations.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Fraud Detection: Identifying suspicious financial transactions.\"\n    p5 = body.add_paragraph()\n    p5.text = \"Autonomous Vehicles: Self-driving cars and drone navigation.\"\n\n    # Slide 10: Conclusion & Next Steps\n    slide = prs.slides.add_slide(content_slide_layout)\n    title = slide.shapes.title\n    title.text = \"Conclusion & Next Steps\"\n    body = slide.shapes.placeholders[1].text_frame\n    p1 = body.add_paragraph()\n    p1.text = \"Recap: Machine Learning empowers computers to learn from data to make intelligent decisions.\"\n    p2 = body.add_paragraph()\n    p2.text = \"Impact: It is transforming virtually every industry and aspect of our daily lives.\"\n    p3 = body.add_paragraph()\n    p3.text = \"Future: A rapidly evolving field with immense potential for innovation.\"\n    p4 = body.add_paragraph()\n    p4.text = \"Next Steps: Explore online courses, practical projects, or delve deeper into specific algorithms.\"\n\n    prs.save(\"generated_presentation.pptx\")\n\nif __name__ == \"__main__\":\n    create_presentation()\n```"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a202d00f-8c83-4ee4-8036-640de33b88be",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "07b605b6c625f297caf5b442125754e4bd82884eb1c6b2496aeb81a44b779bda"
+  },
+  "id": "JdFi1j1fjaZ1ruwK",
+  "tags": []
+}
